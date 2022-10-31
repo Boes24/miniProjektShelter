@@ -1,0 +1,35 @@
+﻿@page "/pedel"
+@using System.Net;
+@using miniProjektShelter.Shared;
+@using miniProjektShelter.Client.Services;
+
+<h1>Pedel siden</h1>
+<br />
+
+<ul>
+    @foreach (var shelterX in Shelters1)
+    {
+        <li>
+            MongoId @shelterX.MongoId
+            Navn @shelterX.Properties.Navn
+            KommuneKode @shelterX.Properties.KommuneKode
+        </li>
+    }
+</ul>
+
+
+
+
+@code {
+    private List<Shelter> Shelters1 = new List<Shelter>();
+
+    [Inject]
+    public IShelterService? Service { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Shelters1 = (await Service!.GetAllItems())!.ToList();
+
+    }
+}
+
