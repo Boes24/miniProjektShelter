@@ -23,6 +23,7 @@
     <None Remove="MongoDB.Bson" />
     <None Remove="Models\" />
     <None Remove="Controllers\" />
+    <None Remove="Extensions.Http" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

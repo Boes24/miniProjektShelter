@@ -5,8 +5,9 @@ using miniProjektShelter.Shared;
 
 namespace miniProjektShelter.Server.Models{
 
-    internal class ShelterRepositoryMongo{
+    internal class ShelterRepositoryMongo : IShelterRepository{
         ShelterDBContext db = new ShelterDBContext();
+
         public ShelterRepositoryMongo()
         {
         }

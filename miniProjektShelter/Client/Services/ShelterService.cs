@@ -7,10 +7,8 @@ namespace miniProjektShelter.Client.Services{
 
         private readonly HttpClient httpClient;
 
-
         public ShelterService(HttpClient httpClient)
         {
-
             this.httpClient = httpClient;
         }
 

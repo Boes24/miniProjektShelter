@@ -2,18 +2,17 @@
 using miniProjektShelter.Shared;
 
 namespace miniProjektShelter.Server.Models{
-    public class IShelterRepository{
-        public IShelterRepository()
-        {
 
-            List<Shelter> GetAllItems();
 
-            Shelter FindItem(int id);
+    public interface IShelterRepository{
+        List<Shelter> GetAllItems();
 
-            void AddItem(Shelter item);
-            bool DeleteItem(int id);
-            bool UpdateItem(Shelter item);
-        }
+        Shelter FindItem(string id);
+
+        void AddItem(Shelter item);
+        bool DeleteItem(int id);
+        bool UpdateItem(Shelter item);
+        
     }
 }
 
