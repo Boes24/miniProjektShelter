@@ -1,14 +1,10 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-namespace miniProjektShelter.Shared
-{
-
-
+namespace miniProjektShelter.Shared{
     [BsonIgnoreExtraElements]
     public class Shelter
     {
-
         public Shelter()
         {
         }
@@ -25,6 +21,9 @@ namespace miniProjektShelter.Shared
         {
             [BsonElement("kommunekode")]
             public int? KommuneKode { get; set; }
+
+            [BsonElement("cvr_navn")]
+            public string? KommuneNavn { get; set; }
 
             [BsonElement("navn")]
             public string? Navn { get; set; }

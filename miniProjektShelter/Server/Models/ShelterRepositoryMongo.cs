@@ -2,6 +2,8 @@
 using MongoDB.Driver;
 using miniProjektShelter.Server.Models;
 using miniProjektShelter.Shared;
+using System.Net.Http;
+using MongoDB.Bson;
 
 namespace miniProjektShelter.Server.Models{
 

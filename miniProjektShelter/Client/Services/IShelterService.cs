@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using miniProjektShelter.Shared;
 
 
@@ -7,6 +8,7 @@ namespace miniProjektShelter.Client.Services{
     public interface IShelterService{
 
         Task<Shelter[]?> GetAllItems();
+        
 
         Task<int> AddItem(Shelter item);
         Task<int> DeleteItem(string id);

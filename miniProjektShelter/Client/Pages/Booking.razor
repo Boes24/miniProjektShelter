@@ -6,6 +6,13 @@
 <h1>Booking</h1>
 <br />
 
+<h4>Kommune</h4>
+<br />
+
+
+
+
+
 <ul>
     @foreach (var shelterX in Shelters1)
     {
@@ -22,12 +29,14 @@
 
 @code {
     private List<Shelter> Shelters1 = new List<Shelter>();
+    private List<string> KommuneListe = new List<string>();
 
     [Inject]
     public IShelterService? Service { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        //KommuneListe = 
         Shelters1 = (await Service!.GetAllItems())!.ToList();
 
     }

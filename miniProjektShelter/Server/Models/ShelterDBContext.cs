@@ -17,8 +17,7 @@ namespace miniProjektShelter.Server.Models{
         {
             get
             {
-                return
-                mongoDatabase.GetCollection<Shelter>("ShelterAlle");
+                return mongoDatabase.GetCollection<Shelter>("ShelterAlle");
             }
         }
     }
