@@ -2,43 +2,129 @@
 @using System.Net;
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
+<div style="width:80%;height:300px;display:block;position:absolute;margin-top:10%;margin-bottom:10%;margin-left:10%;margin-right:10%">
+    <div class="modal-content" style="background-color:white;height:100%">
+        <h5><strong>Navn</strong></h5>
+        <input />
+        <h5>Email</h5>
+        <input />
+        <h5>Telefon</h5>
+        <input />
+    </div>
+</div>
+
 
 <h1>Booking</h1>
 <br />
 
 <h4>Kommune</h4>
-<br />
 
 
-
-
-
-<ul>
-    @foreach (var shelterX in Shelters1)
+<label for="lang">Vælg kommune</label>
+<select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@changeShelter()">
+    @foreach (var navn in KommuneListe)
     {
-        <li>
-            MongoId @shelterX.MongoId
-            Navn @shelterX.Properties.Navn
-            KommuneKode @shelterX.Properties.KommuneKode
-        </li>
+        <option value=@navn>@navn</option>
     }
-</ul>
+</select>
 
+<h5>Dato</h5>
+<label for="lang">Indtast dato</label>
+<input type="date" value="@getCurrentDate()" max="2025-12-31" />
+
+<h5>Antal overnatninger</h5>
+<select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger">
+    <option value=1>1</option>
+    <option value=2>2</option>
+</select>
+
+<h5>Antal personer</h5>
+<select name="antalSelectorPersoner" id="antalSelectorPersoner" @bind="@selectedAntalPersoner" onclick="@changeShelter()">
+    @for (int i = 0; i < 10; i++)
+    {
+        <option value=@i>@i</option>
+    }
+</select>
+
+@if (SheltersToShow == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>KommuneNavn</th>
+                <th>Navn</th>
+                <th>Beskrivelse</th>
+                <th>Antal pladser</th>
+                <th>Handicap egnet</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ShelterX in SheltersToShow)
+            {
+                <tr>
+                    <td>@ShelterX.Properties.KommuneNavn</td>
+                    <td>@ShelterX.Properties.Navn</td>
+                    <td>@ShelterX.Properties.Lang_beskrivelse</td>
+                    <td>@ShelterX.Properties.Antal_pl</td>
+                    <td>@ShelterX.Properties.Handicap</td>
+                    <td><button onclick="@ShelterX.bookShelter">Book</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 
 
 @code {
+
     private List<Shelter> Shelters1 = new List<Shelter>();
     private List<string> KommuneListe = new List<string>();
+    private List<Shelter> SheltersToShow = new List<Shelter>();
+    string selectedString = "Samsø Kommune";
+    int selectedAntalPersoner = 1;
+
+    private void BookShelter(Shelter valgtShelter)
+    {
+        Console.WriteLine("BookShelter");
+    }
+
+    public int changeShelter()
+    {
+        SheltersToShow.Clear();
+        foreach (Shelter shelterX in Shelters1)
+        {
+            if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+            {
+                SheltersToShow.Add(shelterX);
+            }
+        }
+        return 1;
+    }
 
     [Inject]
     public IShelterService? Service { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        //KommuneListe = 
         Shelters1 = (await Service!.GetAllItems())!.ToList();
 
+        foreach (Shelter shelterX in Shelters1)
+        {
+            if (!KommuneListe.Contains(shelterX.Properties.KommuneNavn!))
+            {
+                KommuneListe.Add(shelterX.Properties.KommuneNavn!);
+            }
+        }
+    }
+    public DateTime getCurrentDate()
+    {
+        return DateTime.Now;
     }
 }
 

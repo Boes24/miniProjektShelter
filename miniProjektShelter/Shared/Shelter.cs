@@ -3,8 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 namespace miniProjektShelter.Shared{
     [BsonIgnoreExtraElements]
-    public class Shelter
-    {
+    public class Shelter{
         public Shelter()
         {
         }
@@ -39,6 +38,11 @@ namespace miniProjektShelter.Shared{
 
             [BsonElement("antal_pl")]
             public int? Antal_pl { get; set; }
+        }
+
+        public void bookShelter()
+        {
+            Console.WriteLine("Jeg er nu booket" + Properties.Navn);
         }
     }
 }
