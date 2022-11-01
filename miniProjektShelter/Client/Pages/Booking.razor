@@ -2,14 +2,18 @@
 @using System.Net;
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
-<div style="width:80%;height:300px;display:block;position:absolute;margin-top:10%;margin-bottom:10%;margin-left:10%;margin-right:10%">
+<div style="width:80%;height:400px;display:@modalHidden;position:absolute;margin-top:10%;margin-bottom:10%;margin-left:10%;margin-right:10%">
     <div class="modal-content" style="background-color:white;height:100%">
+        <h2>Du er ved at booke @valgtShalterX</h2>
         <h5><strong>Navn</strong></h5>
-        <input />
+        <input @bind="@costumerName" />
         <h5>Email</h5>
-        <input />
+        <input @bind="@email" />
         <h5>Telefon</h5>
-        <input />
+        <input @bind="@number" />
+        <button>Send</button>
+        <br />
+        <button @onclick="(() => Fortryd())">Fortryd</button>
     </div>
 </div>
 
@@ -66,13 +70,14 @@ else
         <tbody>
             @foreach (var ShelterX in SheltersToShow)
             {
+
                 <tr>
                     <td>@ShelterX.Properties.KommuneNavn</td>
                     <td>@ShelterX.Properties.Navn</td>
                     <td>@ShelterX.Properties.Lang_beskrivelse</td>
                     <td>@ShelterX.Properties.Antal_pl</td>
                     <td>@ShelterX.Properties.Handicap</td>
-                    <td><button onclick="@ShelterX.bookShelter">Book</button></td>
+                    <td><button hidden="@hide1" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
                 </tr>
             }
         </tbody>
@@ -88,11 +93,13 @@ else
     private List<Shelter> SheltersToShow = new List<Shelter>();
     string selectedString = "Samsø Kommune";
     int selectedAntalPersoner = 1;
-
-    private void BookShelter(Shelter valgtShelter)
-    {
-        Console.WriteLine("BookShelter");
-    }
+    string valgtShalterX = "";
+    Shelter currentShelter = new Shelter();
+    bool hide1 = false;
+    string modalHidden = "none";
+    string costumerName = "";
+    string email = "";
+    int number = 0;
 
     public int changeShelter()
     {
@@ -126,5 +133,22 @@ else
     {
         return DateTime.Now;
     }
-}
 
+    public void bookShelter(Shelter valgtShelter)
+    {
+        modalHidden = "block";
+        hide1 = true;
+        valgtShalterX = valgtShelter.Properties.Navn!;
+        currentShelter = valgtShelter;
+    }
+
+    public void Fortryd(){
+        modalHidden = "none";
+        hide1 = false;
+    }
+    public void Send(){
+        //Booking tmpBooking = new Booking(currentShelter.MongoId, costumerName, email, number, [1,1]);
+        Booking B1 = new Booking();
+        Booking tmpBooking = new Booking(mongoID: "");
+    }
+}

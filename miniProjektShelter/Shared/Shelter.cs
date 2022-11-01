@@ -7,6 +7,10 @@ namespace miniProjektShelter.Shared{
         public Shelter()
         {
         }
+        public Shelter(string navn = "")
+        {
+            this.Properties.Navn = navn;
+        }
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -38,11 +42,6 @@ namespace miniProjektShelter.Shared{
 
             [BsonElement("antal_pl")]
             public int? Antal_pl { get; set; }
-        }
-
-        public void bookShelter()
-        {
-            Console.WriteLine("Jeg er nu booket" + Properties.Navn);
         }
     }
 }
