@@ -9,7 +9,7 @@ namespace miniProjektShelter.Server.Models{
         List<CostumerBooking> GetAllBookings();
         Shelter FindItem(string id);
 
-        void AddItem(Shelter item);
+        void AddItem(CostumerBooking item);
         bool DeleteItem(int id);
         bool UpdateItem(Shelter item);
         

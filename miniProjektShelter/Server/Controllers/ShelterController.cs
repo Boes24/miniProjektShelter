@@ -57,7 +57,7 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPost]
-        public void AddItem(Shelter item)
+        public void AddItem(CostumerBooking item)
         {
             Repository.AddItem(item);
         }

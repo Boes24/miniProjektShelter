@@ -19,7 +19,7 @@ namespace miniProjektShelter.Server.Models
         }
 
 
-        public void AddItem(Shelter item)
+        public void AddItem(CostumerBooking item)
         {
 
             Console.WriteLine("Tilføj booking" + item);
@@ -36,7 +36,7 @@ namespace miniProjektShelter.Server.Models
             };
             */
 
-            db.Items.InsertOne(item);
+            db.Bookinger.InsertOne(item);
         }
 
         public bool DeleteItem(int id)
