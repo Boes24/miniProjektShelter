@@ -1,9 +1,11 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-namespace miniProjektShelter.Shared{
+namespace miniProjektShelter.Shared
+{
     [BsonIgnoreExtraElements]
-    public class Shelter{
+    public class Shelter
+    {
         public Shelter()
         {
         }
@@ -42,8 +44,32 @@ namespace miniProjektShelter.Shared{
 
             [BsonElement("antal_pl")]
             public int? Antal_pl { get; set; }
+
         }
+
+        [BsonIgnoreExtraElements]
+        public class BookingObject{
+
+            [BsonElement("KundeNavn")]
+            public string? CostumerName { get; set; }
+
+            [BsonElement("Email")]
+            public string? Email { get; set; }
+
+            [BsonElement("Telefon")]
+            public int? Phone { get; set; }
+
+            [BsonElement("AntalPersoner")]
+            public int? NumberOfPersons { get; set; }
+
+            [BsonElement("Datoer")]
+            public int[]? Dates { get; set; }
+
+            [BsonElement("id")]
+            public int ID { get; set; }
+        }
+
     }
 }
-    
+
 

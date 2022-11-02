@@ -10,10 +10,10 @@ namespace miniProjektShelter.Client.Services{
         Task<Shelter[]?> GetAllItems();
         
 
-        Task<int> AddItem(Shelter item);
+        Task<int> AddItem(CostumerBooking costumerInfo);
         Task<int> DeleteItem(string id);
         Task<Shelter> GetItem(string id);
-        Task<int> UpdateItem(Shelter item);
+        Task<int> UpdateItem(CostumerBooking item);
 
     }
 }

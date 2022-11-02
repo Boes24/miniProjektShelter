@@ -26,9 +26,9 @@ namespace miniProjektShelter.Client.Services{
         }
 
 
-        public async Task<int> AddItem(Shelter item)
+        public async Task<int> AddItem(CostumerBooking costumerInfo)
         {
-            var response = await httpClient.PostAsJsonAsync("api/shelterAPI", item);
+            var response = await httpClient.PostAsJsonAsync("api/shelterAPI", costumerInfo);
             var responseStatusCode = response.StatusCode;
             return (int)responseStatusCode;
         }
@@ -40,7 +40,7 @@ namespace miniProjektShelter.Client.Services{
             return (int)responseStatusCode;
         }
 
-        public async Task<int> UpdateItem(Shelter item)
+        public async Task<int> UpdateItem(CostumerBooking item)
         {
             var response = await httpClient.PutAsJsonAsync("api/shelterAPI", item);
             var responseStatusCode = response.StatusCode;

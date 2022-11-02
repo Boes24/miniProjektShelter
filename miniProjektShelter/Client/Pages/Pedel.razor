@@ -1,0 +1,45 @@
+﻿@page "/pedel"
+@using miniProjektShelter.Shared;
+@using miniProjektShelter.Client.Services;
+
+<NavLink class="nav-link" href="booking">
+    <span class="oi oi-home" aria-hidden="true"></span> Booking
+</NavLink>
+
+<h1>Pedel side</h1>
+
+<h4>Kommune</h4>
+<label for="lang">Vælg kommune</label>
+<select name="kommuneSelector" id="kommuneSelector" @bind="chosenKommune">
+    @foreach (var navn in KommuneList)
+    {
+        <option value=@navn>@navn</option>
+    }
+</select>
+
+@code {
+
+    private List<Shelter> SheltersList = new List<Shelter>();
+    private List<string> KommuneList = new List<string>();
+    private List<Shelter> SheltersToShow = new List<Shelter>();
+
+    private string chosenKommune = "Samsø kommune";
+
+
+    [Inject]
+    public IShelterService? Service { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        SheltersList = (await Service!.GetAllItems())!.ToList();
+
+        foreach (Shelter shelterX in SheltersList)
+        {
+            if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
+            {
+                KommuneList.Add(shelterX.Properties.KommuneNavn!);
+            }
+        }
+    }
+
+}
+

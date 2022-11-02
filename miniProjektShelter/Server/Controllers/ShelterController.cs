@@ -50,11 +50,10 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPost]
-        public void AddItem(Shelter item)
+        public void AddItem(CostumerBooking costumerInfo)
         {
-            throw new NotImplementedException();
+            Repository.AddItem(costumerInfo);
         }
-
 
 
         [HttpGet("{id:int}")]
@@ -64,7 +63,7 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPut]
-        public void Update(Shelter item)
+        public void Update(CostumerBooking item)
         {
             throw new NotImplementedException();
         }

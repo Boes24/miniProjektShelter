@@ -4,10 +4,14 @@ using miniProjektShelter.Server.Models;
 using miniProjektShelter.Shared;
 using System.Net.Http;
 using MongoDB.Bson;
+using System.Reflection.Metadata;
+using System.Xml.Linq;
 
-namespace miniProjektShelter.Server.Models{
+namespace miniProjektShelter.Server.Models
+{
 
-    internal class ShelterRepositoryMongo : IShelterRepository{
+    internal class ShelterRepositoryMongo : IShelterRepository
+    {
         ShelterDBContext db = new ShelterDBContext();
 
         public ShelterRepositoryMongo()
@@ -15,9 +19,24 @@ namespace miniProjektShelter.Server.Models{
         }
 
 
-        public void AddItem(Shelter item)
+        public void AddItem(CostumerBooking costumerInfo)
         {
-            db.Items.InsertOne(item);
+
+            Console.WriteLine("Tilføj booking" + costumerInfo);
+
+            /*
+            var newBooking = new BsonDocument
+            {
+                {"KundeNavn",costumerInfo.CostumerName },
+                {"Telefon",costumerInfo.PhoneNumber },
+                {"Email",costumerInfo.Email },
+                { "date1", costumerInfo.Date1},
+                { "date2", costumerInfo.Date2},
+                { "ShelterID", costumerInfo.ShelterID}
+            };
+            */
+
+            db.bookinger.InsertOne(costumerInfo);
         }
 
         public bool DeleteItem(int id)
@@ -35,7 +54,8 @@ namespace miniProjektShelter.Server.Models{
             var oldItem = FindItem(updatedItem.MongoId!);
             if (oldItem != null)
             {
-                db.Items.ReplaceOne(filter: it => it.MongoId == updatedItem.MongoId, replacement: updatedItem);
+                //db.Items.ReplaceOne(filter: it => it.MongoId == updatedItem.MongoID, replacement: updatedItem);
+
                 return true;
             }
             else

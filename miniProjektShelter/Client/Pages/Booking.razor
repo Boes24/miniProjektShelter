@@ -2,6 +2,11 @@
 @using System.Net;
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
+
+<NavLink class="nav-link" href="pedel">
+    <span class="oi oi-home" aria-hidden="true"></span> Pedel
+</NavLink>
+
 <div style="width:80%;height:400px;display:@modalHidden;position:absolute;margin-top:10%;margin-bottom:10%;margin-left:10%;margin-right:10%">
     <div class="modal-content" style="background-color:white;height:100%">
         <h2>Du er ved at booke @valgtShalterX</h2>
@@ -11,7 +16,7 @@
         <input @bind="@email" />
         <h5>Telefon</h5>
         <input @bind="@number" />
-        <button>Send</button>
+        <button @onclick="(() => Send())">Send</button>
         <br />
         <button @onclick="(() => Fortryd())">Fortryd</button>
     </div>
@@ -22,11 +27,9 @@
 <br />
 
 <h4>Kommune</h4>
-
-
 <label for="lang">Vælg kommune</label>
 <select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@changeShelter()">
-    @foreach (var navn in KommuneListe)
+    @foreach (var navn in KommuneList)
     {
         <option value=@navn>@navn</option>
     }
@@ -88,8 +91,8 @@ else
 
 @code {
 
-    private List<Shelter> Shelters1 = new List<Shelter>();
-    private List<string> KommuneListe = new List<string>();
+    private List<Shelter> SheltersList = new List<Shelter>();
+    private List<string> KommuneList = new List<string>();
     private List<Shelter> SheltersToShow = new List<Shelter>();
     string selectedString = "Samsø Kommune";
     int selectedAntalPersoner = 1;
@@ -99,12 +102,12 @@ else
     string modalHidden = "none";
     string costumerName = "";
     string email = "";
-    int number = 0;
+    int number = new int();
 
     public int changeShelter()
     {
         SheltersToShow.Clear();
-        foreach (Shelter shelterX in Shelters1)
+        foreach (Shelter shelterX in SheltersList)
         {
             if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
             {
@@ -119,13 +122,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Shelters1 = (await Service!.GetAllItems())!.ToList();
+        SheltersList = (await Service!.GetAllItems())!.ToList();
 
-        foreach (Shelter shelterX in Shelters1)
+        foreach (Shelter shelterX in SheltersList)
         {
-            if (!KommuneListe.Contains(shelterX.Properties.KommuneNavn!))
+            if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
             {
-                KommuneListe.Add(shelterX.Properties.KommuneNavn!);
+                KommuneList.Add(shelterX.Properties.KommuneNavn!);
             }
         }
     }
@@ -147,8 +150,7 @@ else
         hide1 = false;
     }
     public void Send(){
-        //Booking tmpBooking = new Booking(currentShelter.MongoId, costumerName, email, number, [1,1]);
-        Booking B1 = new Booking();
-        Booking tmpBooking = new Booking(mongoID: "");
+        CostumerBooking tmpBooking = new CostumerBooking(costumerName, email, number, 1,2, currentShelter.MongoId!);
+        Service.AddItem(tmpBooking);
     }
 }

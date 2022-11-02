@@ -20,6 +20,13 @@ namespace miniProjektShelter.Server.Models{
                 return mongoDatabase.GetCollection<Shelter>("ShelterAlle");
             }
         }
+        public IMongoCollection<CostumerBooking> bookinger
+        {
+            get
+            {
+                return mongoDatabase.GetCollection<CostumerBooking>("Bookinger");
+            }
+        }
     }
 }
 

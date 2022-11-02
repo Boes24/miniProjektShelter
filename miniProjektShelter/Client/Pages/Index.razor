@@ -1,16 +1,14 @@
 ﻿@page "/"
 
 
-<PageTitle>Velkommen</PageTitle>
-
-<NavLink class="nav-link" href="booking">
-    <span class="oi oi-home" aria-hidden="true"></span> Kunde
-</NavLink>
-
-<NavLink class="nav-link" href="pedel">
-    <span class="oi oi-home" aria-hidden="true"></span> Pedel
-</NavLink>
-
+<ul class="nav nav-pills nav-justified">
+    <li class="nav-item">
+        <a class="nav-link active" href="booking"><span class="oi oi-home" aria-hidden="true"></span>Booking</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="pedel"><span class="oi oi-home" aria-hidden="true"></span>Pedel</a>
+    </li>
+</ul>
 
 
 @code {
