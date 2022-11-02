@@ -29,6 +29,13 @@ namespace miniProjektShelter.Server.Controllers{
             return Repository.GetAllItems();
         }
 
+        [HttpGet]
+        [Route("getAllBookings")]
+        public IEnumerable<CostumerBooking> GetAllBookings()
+        {
+            return Repository.GetAllBookings();
+        }
+
         [HttpDelete("{id:int}")]
         public StatusCodeResult DeleteItem(int id)
         {
@@ -50,9 +57,9 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPost]
-        public void AddItem(CostumerBooking costumerInfo)
+        public void AddItem(Shelter item)
         {
-            Repository.AddItem(costumerInfo);
+            Repository.AddItem(item);
         }
 
 

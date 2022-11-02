@@ -19,10 +19,10 @@ namespace miniProjektShelter.Server.Models
         }
 
 
-        public void AddItem(CostumerBooking costumerInfo)
+        public void AddItem(Shelter item)
         {
 
-            Console.WriteLine("Tilføj booking" + costumerInfo);
+            Console.WriteLine("Tilføj booking" + item);
 
             /*
             var newBooking = new BsonDocument
@@ -36,7 +36,7 @@ namespace miniProjektShelter.Server.Models
             };
             */
 
-            db.bookinger.InsertOne(costumerInfo);
+            db.Items.InsertOne(item);
         }
 
         public bool DeleteItem(int id)
@@ -75,6 +75,11 @@ namespace miniProjektShelter.Server.Models
         public List<Shelter> GetAllItems()
         {
             return db.Items.Find(_ => true).ToList();
+        }
+
+        public List<CostumerBooking> GetAllBookings()
+        {
+            return db.Bookinger.Find(_ => true).ToList();
         }
     }
 }

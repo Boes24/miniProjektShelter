@@ -17,9 +17,32 @@
     }
 </select>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>KommuneNavn</th>
+            <th>Navn</th>
+            <th>Beskrivelse</th>
+            <th>Antal pladser</th>
+            <th>Handicap egnet</th>
+            <th>Book</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Booking in BookingerList)
+        {
+
+            <tr>
+                <td>@Booking.CostumerName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 @code {
 
     private List<Shelter> SheltersList = new List<Shelter>();
+    private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
     private List<string> KommuneList = new List<string>();
     private List<Shelter> SheltersToShow = new List<Shelter>();
 
@@ -31,6 +54,7 @@
     protected override async Task OnInitializedAsync()
     {
         SheltersList = (await Service!.GetAllItems())!.ToList();
+        BookingerList = (await Service!.GetAllBookings())!.ToList();
 
         foreach (Shelter shelterX in SheltersList)
         {

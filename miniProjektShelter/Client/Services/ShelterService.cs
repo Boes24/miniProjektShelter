@@ -25,6 +25,12 @@ namespace miniProjektShelter.Client.Services{
             return result;
         }
 
+        public Task<CostumerBooking[]?> GetAllBookings()
+        {
+            //var result = httpClient.GetFromJsonAsync<ShoppingItem[]>("sample-data/shoppingdata.json");
+            var result = httpClient.GetFromJsonAsync<CostumerBooking[]>("api/shelterAPI/getAllBookings");
+            return result;
+        }
 
         public async Task<int> AddItem(CostumerBooking costumerInfo)
         {
