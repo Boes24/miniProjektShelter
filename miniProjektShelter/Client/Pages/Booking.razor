@@ -37,10 +37,10 @@
 
 <h5>Dato</h5>
 <label for="lang">Indtast dato</label>
-<input type="date" value="@getCurrentDate()" max="2025-12-31" />
+<input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()"/>
 
 <h5>Antal overnatninger</h5>
-<select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger">
+<select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@changeShelter()">
     <option value=1>1</option>
     <option value=2>2</option>
 </select>
@@ -73,7 +73,7 @@ else
         <tbody>
             @foreach (var ShelterX in SheltersToShow)
             {
-
+                    
                 <tr>
                     <td>@ShelterX.Properties.KommuneNavn</td>
                     <td>@ShelterX.Properties.Navn</td>
@@ -92,6 +92,7 @@ else
 @code {
 
     private List<Shelter> SheltersList = new List<Shelter>();
+    private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
     private List<string> KommuneList = new List<string>();
     private List<Shelter> SheltersToShow = new List<Shelter>();
     string selectedString = "Samsø Kommune";
@@ -103,6 +104,12 @@ else
     string costumerName = "";
     string email = "";
     int number = new int();
+    DateTime chosenDate = new DateTime();
+    int date1 = 0;
+    int date2 = -1;
+
+    int overnatninger2Stk = 1;
+
 
     public int changeShelter()
     {
@@ -112,6 +119,57 @@ else
             if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
             {
                 SheltersToShow.Add(shelterX);
+                date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+                DateTime tmpDate = chosenDate.AddDays(1);
+
+
+                foreach (CostumerBooking tmpBooking in BookingerList)
+                {
+
+                    if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
+                    {
+                        Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                        SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+
+                    }
+                    else if (overnatninger2Stk == 2)
+                    {
+                        date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                        if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
+                        {
+                            Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                            SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                        }
+                    }
+
+
+                    /*
+                    if (overnatninger2Stk == 1)
+                    {
+                        Console.WriteLine("overnatninger2Stk = 1");
+
+                        if (tmpBooking.Date1 != date1 && tmpBooking.Date2 != date1 && !SheltersToShow.Contains(shelterX))
+                        {
+
+                            SheltersToShow.Add(shelterX);
+                        }
+                    }
+                    else if (overnatninger2Stk == 2)
+                    {
+                        Console.WriteLine("overnatninger2Stk = 2");
+                        DateTime tmpDate = chosenDate.AddDays(1);
+                        date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                        if (tmpBooking.Date1 != date1 && tmpBooking.Date2 != date1 && tmpBooking.Date1 != date2 && tmpBooking.Date2 != date2 && !SheltersToShow.Contains(shelterX))
+                        {
+                            SheltersToShow.Add(shelterX);
+                        }
+                    }
+                    */
+
+
+                }
+
+
             }
         }
         return 1;
@@ -123,6 +181,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         SheltersList = (await Service!.GetAllItems())!.ToList();
+        BookingerList = (await Service!.GetAllBookings())!.ToList();
 
         foreach (Shelter shelterX in SheltersList)
         {
@@ -131,7 +190,16 @@ else
                 KommuneList.Add(shelterX.Properties.KommuneNavn!);
             }
         }
+
     }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        chosenDate = getCurrentDate();
+    }
+
+
     public DateTime getCurrentDate()
     {
         return DateTime.Now;
@@ -150,8 +218,22 @@ else
         hide1 = false;
     }
     public void Send(){
-        CostumerBooking tmpBooking = new CostumerBooking(costumerName, email, number, 1,2, currentShelter.MongoId!);
+        //Konvetere dateformatere til int
+        //2022-11-02 => 20221102    2022*10000 = 20220000 + 11*100 = 1100 + 02
+        date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+        if (overnatninger2Stk == 2)
+        {
+            DateTime tmpDate = chosenDate.AddDays(1);
+            date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+        }
+
+        if (date2 == -1)
+        {
+            date2 = 0;
+        }
+
+        CostumerBooking tmpBooking = new CostumerBooking(costumerName, email, number, date1, date2, currentShelter.MongoId!);
         Service.AddItem(tmpBooking);
-        
+
     }
-}
+    }

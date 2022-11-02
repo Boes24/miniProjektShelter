@@ -24,7 +24,7 @@ namespace miniProjektShelter.Shared{
         public int Date1 { get; set; }
 
         [BsonElement("Date2")]
-        public int? Date2 { get; set; }
+        public int Date2 { get; set; }
 
         [BsonElement("ShelterID")]
         public string ShelterID { get; set; }
