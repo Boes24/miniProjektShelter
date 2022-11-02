@@ -22,7 +22,7 @@
         <tr>
             <th>CostumerName</th>
             <th>BookingEmail</th>
-            <th>ShelterID</th>
+            <th>ShelterNavn</th>
             <th>Date1</th>
             <th>Date2</th>
         </tr>
@@ -34,7 +34,7 @@
             <tr>
                 <td>@Booking.CostumerName</td>
                 <td>@Booking.Email</td>
-                <td>@Booking.ShelterID</td>
+                <td>@Booking.findShelterInList(Booking.ShelterID, SheltersList).Properties.Navn</td>
                 <td>@Booking.Date1</td>
                 <td>@Booking.Date2</td>
             </tr>
@@ -76,7 +76,7 @@
 
     public int changeMunicipality()
     {
-        
+
         SheltersToShow.Clear();
         foreach (Shelter shelterX in SheltersList)
         {
@@ -86,7 +86,7 @@
             }
         }
         bookingsToShow.Clear();
-        
+
         foreach (CostumerBooking bookingX in BookingerList)
         {
             foreach (Shelter shelterX in SheltersToShow)
@@ -100,6 +100,8 @@
         return 1;
 
     }
+
+
 
 }
 

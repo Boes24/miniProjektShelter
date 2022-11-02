@@ -2,6 +2,7 @@
 @using System.Net;
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
+@using miniProjektShelter.Client.Shared;
 
 <NavLink class="nav-link" href="pedel">
     <span class="oi oi-home" aria-hidden="true"></span> Pedel
@@ -37,7 +38,7 @@
 
 <h5>Dato</h5>
 <label for="lang">Indtast dato</label>
-<input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()"/>
+<input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()" />
 
 <h5>Antal overnatninger</h5>
 <select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@changeShelter()">
@@ -73,7 +74,7 @@ else
         <tbody>
             @foreach (var ShelterX in SheltersToShow)
             {
-                    
+
                 <tr>
                     <td>@ShelterX.Properties.KommuneNavn</td>
                     <td>@ShelterX.Properties.Navn</td>
@@ -213,11 +214,15 @@ else
         currentShelter = valgtShelter;
     }
 
-    public void Fortryd(){
+    public void Fortryd()
+    {
         modalHidden = "none";
         hide1 = false;
     }
-    public void Send(){
+    public void Send()
+    {
+
+
         //Konvetere dateformatere til int
         //2022-11-02 => 20221102    2022*10000 = 20220000 + 11*100 = 1100 + 02
         date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
@@ -236,4 +241,6 @@ else
         Service.AddItem(tmpBooking);
 
     }
-    }
+
+    
+}

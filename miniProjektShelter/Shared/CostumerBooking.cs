@@ -46,7 +46,17 @@ namespace miniProjektShelter.Shared{
 
 
 
-
+        public Shelter findShelterInList(string shelterMongoID, List<Shelter> ListOfShelters)
+        {
+            foreach (Shelter tmpShelter in ListOfShelters)
+            {
+                if (tmpShelter.MongoId == shelterMongoID)
+                {
+                    return tmpShelter;
+                }
+            }
+            return new Shelter(navn: "FINDES IKKE!!! IDIOT");
+        }
 
     }
 }
