@@ -1,6 +1,7 @@
 ﻿using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace miniProjektShelter.Shared{
 
@@ -11,14 +12,20 @@ namespace miniProjektShelter.Shared{
         [BsonRepresentation(BsonType.ObjectId)]
         public string? MongoId { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "Dit navn kan ikke indeholde mere en 50 bogstaver")]
         [BsonElement("Kundenavn")]
         public string? CostumerName { get; set; }
 
+        [Required]
+        [EmailAddress]
         [BsonElement("Email")]
         public string? Email { get; set; }
 
+        [Required]
+        [Range(minimum: 1, maximum: System.Int32.MaxValue, ErrorMessage = "Et telefonnummer kan ikke indeholde bogstaver")]
         [BsonElement("Telefon")]
-        public int? PhoneNumber { get; set; }
+        public int PhoneNumber { get; set; }
 
         [BsonElement("Date1")]
         public int Date1 { get; set; }
