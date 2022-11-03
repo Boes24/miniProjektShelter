@@ -10,15 +10,16 @@ namespace miniProjektShelter.Client.Pages
     {
 
         private List<Shelter> SheltersList = new List<Shelter>();
-        private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
+        private List<CustomerBooking> BookingsList = new List<CustomerBooking>();
         private List<string> KommuneList = new List<string>();
         private List<Shelter> SheltersToShow = new List<Shelter>();
         string selectedString = "Samsø Kommune";
         int selectedAntalPersoner = 1;
-        string valgtShalterX = "";
+        string valgtShelterString = "";
         Shelter currentShelter = new Shelter();
-        bool hide1 = false;
+        bool bookingButtonHidden = false;
         string modalHidden = "none";
+        string bookingConfirmationHidden = "none";
         DateTime chosenDate = new DateTime();
         int date1 = 0;
         int date2 = -1;
@@ -27,7 +28,7 @@ namespace miniProjektShelter.Client.Pages
         int overnatninger2Stk = 1;
 
 
-        public int changeShelter()
+        public int ChangeShelter()
         {
             SheltersToShow.Clear();
 
@@ -35,7 +36,7 @@ namespace miniProjektShelter.Client.Pages
             {
                 foreach (Shelter shelterX in SheltersList)
                 {
-                    if (shelterX.Properties.Facil_ty == "Shelter")
+                    if (shelterX.Properties.FacilityType == "Shelter")
                     {
                         SheltersToShow.Add(shelterX);
                     }
@@ -44,49 +45,27 @@ namespace miniProjektShelter.Client.Pages
             }
             else
             {
-                foreach (Shelter shelterX in SheltersList)
+                foreach (Shelter shelter in SheltersList) //Hver Shelter shelter tilføjes til listen SheltersToShow, derefter fjernes overflødelige baseret på en liste af parametre. 
                 {
-                    if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+                    if (shelter.Properties.MunicipalName == selectedString && shelter.Properties.FacilityType == "Shelter" && shelter.Properties.Capacity >= selectedAntalPersoner)
                     {
-                        SheltersToShow.Add(shelterX);
+                        SheltersToShow.Add(shelter);
                         date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
                         DateTime tmpDate = chosenDate.AddDays(1);
 
-
-                        foreach (CostumerBooking tmpBooking in BookingerList)
+                        foreach (CustomerBooking tmpBooking in BookingsList)
                         {
 
-                            if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
+                            if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelter.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelter.MongoId)
                             {
-                                try
-                                {
-                                    Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                                    SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
-                                }
-                                catch
-                                {
-                                    Shelter dummyShelter = new Shelter(navn: "Ingen shelters passer til dine valg");
-
-                                    SheltersToShow.Add(dummyShelter);
-                                }
-
+                                TryRemoveShelter(shelter);
                             }
                             else if (overnatninger2Stk == 2)
                             {
                                 date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
-                                if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
+                                if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelter.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelter.MongoId)
                                 {
-                                    try{
-                                        Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                                        SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
-                                    }
-                                    catch
-                                    {
-                                        Shelter dummyShelter = new Shelter(navn: "Ingen shelters passer til dine valg");
-
-                                        SheltersToShow.Add(dummyShelter);
-                                    }
-                                    
+                                    TryRemoveShelter(shelter);
                                 }
                             }
                         }
@@ -104,15 +83,15 @@ namespace miniProjektShelter.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             SheltersList = (await Service!.GetAllItems())!.ToList();
-            BookingerList = (await Service!.GetAllBookings())!.ToList();
+            BookingsList = (await Service!.GetAllBookings())!.ToList();
 
             KommuneList.Add("Alle kommuner");
 
             foreach (Shelter shelterX in SheltersList)
             {
-                if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
+                if (!KommuneList.Contains(shelterX.Properties.MunicipalName!))
                 {
-                    KommuneList.Add(shelterX.Properties.KommuneNavn!);
+                    KommuneList.Add(shelterX.Properties.MunicipalName!);
                 }
             }
             IsDataLoaded = true;
@@ -123,39 +102,56 @@ namespace miniProjektShelter.Client.Pages
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            chosenDate = getCurrentDate();
+            chosenDate = GetCurrentDate();
             EditContext = new EditContext(CustomerBookingValidation); // Opretter ny editcontext til validering af brugerinfo
-            
+
 
         }
 
 
-        public DateTime getCurrentDate()
+        public DateTime GetCurrentDate()
         {
             return DateTime.Now;
+        }
+
+        public void TryRemoveShelter(Shelter shelter)
+        {
+            try
+            {
+                Console.WriteLine("Remove:" + shelter.Properties.ShelterName);
+                SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+            }
+            catch
+            {
+                Shelter NoAvailableSheltersShelter = new Shelter(navn: "Ingen shelters passer til dine valg");
+                SheltersToShow.Add(NoAvailableSheltersShelter);
+                bookingButtonHidden = true;
+            }
         }
 
         public void bookShelter(Shelter valgtShelter)
         {
             EditContext = new EditContext(CustomerBookingValidation); // Opretter ny editcontext til validering af brugerinfo
             modalHidden = "block";
-            hide1 = true;
-            valgtShalterX = valgtShelter.Properties.Navn!;
+            bookingButtonHidden = true;
+            valgtShelterString = valgtShelter.Properties.ShelterName!;
             currentShelter = valgtShelter;
-           
+            bookingConfirmationHidden = "none";
         }
 
         public void Fortryd()
         {
             modalHidden = "none";
-            hide1 = false;
+            bookingButtonHidden = false;
+            bookingConfirmationHidden = "block";
+
         }
-       
+
 
         // Validation handler
-        private CostumerBooking CustomerBookingValidation = new CostumerBooking();
+        private CustomerBooking CustomerBookingValidation = new CustomerBooking();
         private EditContext? EditContext;
-        private List<CostumerBooking> ValidationList = new List<CostumerBooking>();
+        private List<CustomerBooking> ValidationList = new List<CustomerBooking>();
 
 
         private void HandleValidSubmit()
@@ -177,8 +173,13 @@ namespace miniProjektShelter.Client.Pages
                 date2 = 0;
             }
 
-            CostumerBooking tmpBooking = new CostumerBooking(CustomerBookingValidation.CostumerName, CustomerBookingValidation.Email, CustomerBookingValidation.PhoneNumber, date1, date2, currentShelter.MongoId!);
+            CustomerBooking tmpBooking = new CustomerBooking(CustomerBookingValidation.CustomerName, CustomerBookingValidation.Email, CustomerBookingValidation.PhoneNumber, date1, date2, currentShelter.MongoId!);
             Service.AddItem(tmpBooking);
+            bookingButtonHidden = false;
+            modalHidden = "none";
+            bookingConfirmationHidden = "block";
+
+
 
 
         }

@@ -25,14 +25,14 @@ namespace miniProjektShelter.Client.Services{
             return result;
         }
 
-        public Task<CostumerBooking[]?> GetAllBookings()
+        public Task<CustomerBooking[]?> GetAllBookings()
         {
             //var result = httpClient.GetFromJsonAsync<ShoppingItem[]>("sample-data/shoppingdata.json");
-            var result = httpClient.GetFromJsonAsync<CostumerBooking[]>("api/shelterAPI/getAllBookings");
+            var result = httpClient.GetFromJsonAsync<CustomerBooking[]>("api/shelterAPI/getAllBookings");
             return result;
         }
 
-        public async Task<int> AddItem(CostumerBooking costumerInfo)
+        public async Task<int> AddItem(CustomerBooking costumerInfo)
         {
             var response = await httpClient.PostAsJsonAsync("api/shelterAPI", costumerInfo);
             var responseStatusCode = response.StatusCode;
@@ -46,7 +46,7 @@ namespace miniProjektShelter.Client.Services{
             return (int)responseStatusCode;
         }
 
-        public async Task<int> UpdateItem(CostumerBooking item)
+        public async Task<int> UpdateItem(CustomerBooking item)
         {
             var response = await httpClient.PutAsJsonAsync("api/shelterAPI", item);
             var responseStatusCode = response.StatusCode;

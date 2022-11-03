@@ -8,12 +8,12 @@ namespace miniProjektShelter.Client.Services{
     public interface IShelterService{
 
         Task<Shelter[]?> GetAllItems();
-        Task<CostumerBooking[]?> GetAllBookings();
+        Task<CustomerBooking[]?> GetAllBookings();
 
-        Task<int> AddItem(CostumerBooking costumerInfo);
+        Task<int> AddItem(CustomerBooking costumerInfo);
         Task<int> DeleteItem(string id);
         Task<Shelter> GetItem(string id);
-        Task<int> UpdateItem(CostumerBooking item);
+        Task<int> UpdateItem(CustomerBooking item);
 
     }
 }

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace miniProjektShelter.Shared{
 
     [BsonIgnoreExtraElements]
-    public class CostumerBooking{
+    public class CustomerBooking{
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -15,7 +15,7 @@ namespace miniProjektShelter.Shared{
         [Required]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Dit navn kan ikke indeholde mere en 50 bogstaver")]
         [BsonElement("Kundenavn")]
-        public string? CostumerName { get; set; }
+        public string? CustomerName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -36,9 +36,9 @@ namespace miniProjektShelter.Shared{
         [BsonElement("ShelterID")]
         public string ShelterID { get; set; }
 
-        public CostumerBooking(string costumerName, string email, int phoneNumber, int date1, int date2, string shelterID)
+        public CustomerBooking(string costumerName, string email, int phoneNumber, int date1, int date2, string shelterID)
         {
-            this.CostumerName = costumerName;
+            this.CustomerName = costumerName;
             this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.Date1 = date1;
@@ -46,14 +46,14 @@ namespace miniProjektShelter.Shared{
             this.ShelterID = shelterID;
         }
 
-        public CostumerBooking()
+        public CustomerBooking()
         {
 
         }
 
 
 
-        public Shelter findShelterInList(string shelterMongoID, List<Shelter> ListOfShelters)
+        public Shelter FindShelterInList(string shelterMongoID, List<Shelter> ListOfShelters)
         {
             foreach (Shelter tmpShelter in ListOfShelters)
             {

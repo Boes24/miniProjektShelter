@@ -8,11 +8,11 @@ namespace miniProjektShelter.Client.Pages
     public partial class Pedel
     {
         private List<Shelter> SheltersList = new List<Shelter>();
-        private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
+        private List<CustomerBooking> BookingerList = new List<CustomerBooking>();
         private List<string> KommuneList = new List<string>();
         private List<Shelter> SheltersToShow = new List<Shelter>();
 
-        private List<CostumerBooking> bookingsToShow = new List<CostumerBooking>();
+        private List<CustomerBooking> bookingsToShow = new List<CustomerBooking>();
 
         private string chosenKommune = "Samsø Kommune";
 
@@ -26,9 +26,9 @@ namespace miniProjektShelter.Client.Pages
 
             foreach (Shelter shelterX in SheltersList)
             {
-                if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
+                if (!KommuneList.Contains(shelterX.Properties.MunicipalName!))
                 {
-                    KommuneList.Add(shelterX.Properties.KommuneNavn!);
+                    KommuneList.Add(shelterX.Properties.MunicipalName!);
                 }
             }
 
@@ -43,14 +43,14 @@ namespace miniProjektShelter.Client.Pages
             SheltersToShow.Clear();
             foreach (Shelter shelterX in SheltersList)
             {
-                if (shelterX.Properties.KommuneNavn == chosenKommune && shelterX.Properties.Facil_ty == "Shelter")
+                if (shelterX.Properties.MunicipalName == chosenKommune && shelterX.Properties.FacilityType == "Shelter")
                 {
                     SheltersToShow.Add(shelterX);
                 }
             }
             bookingsToShow.Clear();
 
-            foreach (CostumerBooking bookingX in BookingerList)
+            foreach (CustomerBooking bookingX in BookingerList)
             {
                 foreach (Shelter shelterX in SheltersToShow)
                 {

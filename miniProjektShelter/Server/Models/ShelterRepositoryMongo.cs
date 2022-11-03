@@ -19,7 +19,7 @@ namespace miniProjektShelter.Server.Models
         }
 
 
-        public void AddItem(CostumerBooking item)
+        public void AddItem(CustomerBooking item)
         {
 
             Console.WriteLine("Tilføj booking" + item);
@@ -77,7 +77,7 @@ namespace miniProjektShelter.Server.Models
             return db.Items.Find(_ => true).ToList();
         }
 
-        public List<CostumerBooking> GetAllBookings()
+        public List<CustomerBooking> GetAllBookings()
         {
             return db.Bookinger.Find(_ => true).ToList();
         }

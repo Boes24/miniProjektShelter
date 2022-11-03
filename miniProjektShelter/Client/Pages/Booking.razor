@@ -18,11 +18,11 @@
             <DataAnnotationsValidator />
             
 
-            <h2>Du er ved at booke @valgtShalterX</h2>
+            <h2>Du er ved at booke @valgtShelterString</h2>
 
             <h5><strong>Navn</strong></h5>
-            <InputText  @bind-Value="@CustomerBookingValidation.CostumerName" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.CostumerName)"/>
+            <InputText  @bind-Value="@CustomerBookingValidation.CustomerName" class="form-control" />
+        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerName)"/>
 
             <h5>Email</h5>
             <InputText @bind-Value="@CustomerBookingValidation.Email" class="form-control" />
@@ -49,12 +49,13 @@
 
 <h1>Booking</h1>
 <br />
+<strong><p style="display:@bookingConfirmationHidden; color:green">Du har nu booket et shelter!</p></strong>
 
 <div>
     <div class="CustomerDropdown">
         <h4>Kommune</h4>
         <label for="lang">Vælg kommune</label><br />
-        <select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@changeShelter()">
+        <select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@ChangeShelter()">
             @foreach (var navn in KommuneList)
             {
                 <option value=@navn>@navn</option>
@@ -64,13 +65,13 @@
     <div class="CustomerDropdown">
         <h5>Dato</h5>
         <label for="lang">Indtast dato</label><br />
-        <input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()" />
+        <input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@ChangeShelter()" />
     </div>
     <div class="CustomerDropdown">
 
         <h5>Antal overnatninger</h5> 
         <label for="lang">Vælg antal overnatninger</label><br />
-        <select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@changeShelter()">
+        <select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@ChangeShelter()">
             <option value=1>1</option>
             <option value=2>2</option>
         </select>
@@ -79,7 +80,7 @@
 
         <h5>Antal personer</h5>
         <label for="lang">Vælg antal personer</label><br />
-        <select name="antalSelectorPersoner" id="antalSelectorPersoner" @bind="@selectedAntalPersoner" onclick="@changeShelter()">
+        <select name="antalSelectorPersoner" id="antalSelectorPersoner" @bind="@selectedAntalPersoner" onclick="@ChangeShelter()">
             @for (int i = 0; i < 10; i++)
             {
                 <option value=@i>@i</option>
@@ -111,16 +112,17 @@
                 {
 
                     <tr>
-                        <td>@ShelterX.Properties.KommuneNavn</td>
-                        <td>@ShelterX.Properties.Navn</td>
-                        <td>@ShelterX.Properties.Lang_beskrivelse</td>
-                        <td>@ShelterX.Properties.Antal_pl</td>
+                        <td>@ShelterX.Properties.MunicipalName</td>
+                        <td>@ShelterX.Properties.ShelterName</td>
+                        <td>@ShelterX.Properties.LongDescription</td>
+                        <td>@ShelterX.Properties.Capacity</td>
                         <td>@ShelterX.Properties.Handicap</td>
-                        <td><button hidden="@hide1" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
+                        <td><button hidden="@bookingButtonHidden" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
                     </tr>
                 }
             </tbody>
         </table>
+        
     }
 
 

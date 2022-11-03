@@ -6,10 +6,10 @@ namespace miniProjektShelter.Server.Models{
 
     public interface IShelterRepository{
         List<Shelter> GetAllItems();
-        List<CostumerBooking> GetAllBookings();
+        List<CustomerBooking> GetAllBookings();
         Shelter FindItem(string id);
 
-        void AddItem(CostumerBooking item);
+        void AddItem(CustomerBooking item);
         bool DeleteItem(int id);
         bool UpdateItem(Shelter item);
         

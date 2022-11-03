@@ -33,7 +33,7 @@ namespace miniProjektShelter.Server.Controllers{
 
         [HttpGet]
         [Route("getAllBookings")] //route er til for at lave flere get metoder i samme controller
-        public IEnumerable<CostumerBooking> GetAllBookings()
+        public IEnumerable<CustomerBooking> GetAllBookings()
         {
             return Repository.GetAllBookings();
         }
@@ -60,7 +60,7 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPost]
-        public void AddItem(CostumerBooking item)
+        public void AddItem(CustomerBooking item)
         {
             Repository.AddItem(item);
         }
@@ -73,7 +73,7 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPut]
-        public void Update(CostumerBooking item)
+        public void Update(CustomerBooking item)
         {
             throw new NotImplementedException();
         }

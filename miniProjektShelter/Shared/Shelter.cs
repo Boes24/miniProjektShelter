@@ -13,10 +13,10 @@ namespace miniProjektShelter.Shared
         public Shelter(string navn = "")
         {
             this.Properties = new ShelterProperties();
-            this.Properties.Navn = navn;
-            this.Properties.KommuneNavn = "";
-            this.Properties.Lang_beskrivelse = "";
-            this.Properties.Antal_pl = 0;
+            this.Properties.ShelterName = navn;
+            this.Properties.MunicipalName = "";
+            this.Properties.LongDescription = "";
+            this.Properties.Capacity = 0;
             this.Properties.Handicap = "";
         }
 
@@ -31,25 +31,25 @@ namespace miniProjektShelter.Shared
         public class ShelterProperties
         {
             [BsonElement("kommunekode")]
-            public int? KommuneKode { get; set; }
+            public int? MunicipalCode { get; set; }
 
             [BsonElement("cvr_navn")]
-            public string? KommuneNavn { get; set; }
+            public string? MunicipalName { get; set; }
 
             [BsonElement("navn")]
-            public string? Navn { get; set; }
+            public string? ShelterName { get; set; }
 
             [BsonElement("facil_ty")]
-            public string? Facil_ty { get; set; }
+            public string? FacilityType { get; set; }
 
             [BsonElement("lang_beskr")]
-            public string? Lang_beskrivelse { get; set; }
+            public string? LongDescription { get; set; }
 
             [BsonElement("handicap")]
             public string? Handicap { get; set; }
 
             [BsonElement("antal_pl")]
-            public int? Antal_pl { get; set; }
+            public int? Capacity { get; set; }
 
         }
 
