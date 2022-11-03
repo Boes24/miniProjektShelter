@@ -73,9 +73,8 @@ namespace miniProjektShelter.Server.Controllers{
         }
 
         [HttpPut]
-        public void Update(CustomerBooking item)
-        {
-            throw new NotImplementedException();
+        public void Update(CustomerBooking booking){
+            Repository.UpdateBooking(booking);
         }
 
     }

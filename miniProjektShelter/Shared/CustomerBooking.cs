@@ -9,7 +9,7 @@ namespace miniProjektShelter.Shared{
     public class CustomerBooking{
 
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)] 
         public string? MongoId { get; set; }
 
         [Required]
@@ -36,6 +36,9 @@ namespace miniProjektShelter.Shared{
         [BsonElement("ShelterID")]
         public string BookedShelterID { get; set; }
 
+        [BsonElement("Active")]
+        public bool Active { get; set; }
+
         public CustomerBooking(string costumerName, string email, int phoneNumber, int date1, int date2, string shelterID)
         {
             this.CustomerName = costumerName;
@@ -44,6 +47,7 @@ namespace miniProjektShelter.Shared{
             this.BookedDate1 = date1;
             this.BookedDate2 = date2;
             this.BookedShelterID = shelterID;
+            this.Active = false;
         }
 
         public CustomerBooking()

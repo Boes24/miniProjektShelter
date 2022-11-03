@@ -12,7 +12,9 @@ namespace miniProjektShelter.Server.Models{
         void AddItem(CustomerBooking item);
         bool DeleteItem(int id);
         bool UpdateItem(Shelter item);
-        
+        bool UpdateBooking(CustomerBooking updatedBooking);
+
+
     }
 }
 

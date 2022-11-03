@@ -38,13 +38,14 @@
             <h5>Telefon</h5>
             <InputNumber @bind-Value="@CustomerBookingValidation.CustomerPhoneNumber" class="form-control" />
             <ValidationMessage For="@(() => CustomerBookingValidation.CustomerPhoneNumber)" />
-            <button type="submit" style="color:green">Send</button>
-            <br />
-            <button style="color:red" @onclick="(() => AbortBooking())">Fortryd</button>
             <div>
                 <input id="checkbox" type="checkbox" />
                 <label for="checkbox"> Jeg accepterer <a href="#">Terms and Conditions</a>.</label>
             </div>
+            <button type="submit" style="color:green">Send</button>
+            <br />
+            <button style="color:red" @onclick="(() => AbortBooking())">Fortryd</button>
+
 
         </EditForm>
 

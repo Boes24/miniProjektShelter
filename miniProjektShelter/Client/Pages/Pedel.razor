@@ -25,6 +25,7 @@
             <th>Shelter navn</th>
             <th>Dato 1</th>
             <th>Dato 2</th>
+            <th>Booking status</th>
         </tr>
     </thead>
     <tbody>
@@ -37,6 +38,7 @@
                 <td>@Booking.FindShelterInList(Booking.BookedShelterID, SheltersList).Properties.ShelterName</td>
                 <td>@Booking.BookedDate1</td>
                 <td>@Booking.BookedDate2</td>
+                <td><input type="checkbox" @bind="@Booking.Active" @onclick="(() => updateBookingStatus(Booking))" /></td>
             </tr>
         }
     </tbody>

@@ -64,6 +64,13 @@ namespace miniProjektShelter.Client.Pages
 
         }
 
+        public void updateBookingStatus(CustomerBooking tmpBooking)
+        {
+            tmpBooking.Active = false;
+            Console.WriteLine(tmpBooking.MongoId);
+            Service.UpdateItem(tmpBooking);
+        }
+
     }
 }
 

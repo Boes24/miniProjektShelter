@@ -41,13 +41,14 @@ namespace miniProjektShelter.Client.Services{
 
         public async Task<int> DeleteItem(string id)
         {
-            var response = await httpClient.DeleteAsync("api/shelterAPI/" + id);
+            var response = await httpClient.DeleteAsync("api/shelterAPI" + id);
             var responseStatusCode = response.StatusCode;
             return (int)responseStatusCode;
         }
 
         public async Task<int> UpdateItem(CustomerBooking item)
         {
+            Console.WriteLine("UpdateItem med booking");
             var response = await httpClient.PutAsJsonAsync("api/shelterAPI", item);
             var responseStatusCode = response.StatusCode;
             return (int)responseStatusCode;

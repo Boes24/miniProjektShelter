@@ -21,21 +21,7 @@ namespace miniProjektShelter.Server.Models
 
         public void AddItem(CustomerBooking item)
         {
-
             Console.WriteLine("Tilføj booking" + item);
-
-            /*
-            var newBooking = new BsonDocument
-            {
-                {"KundeNavn",costumerInfo.CostumerName },
-                {"Telefon",costumerInfo.PhoneNumber },
-                {"Email",costumerInfo.Email },
-                { "date1", costumerInfo.Date1},
-                { "date2", costumerInfo.Date2},
-                { "ShelterID", costumerInfo.ShelterID}
-            };
-            */
-
             db.Bookinger.InsertOne(item);
         }
 
@@ -62,13 +48,35 @@ namespace miniProjektShelter.Server.Models
                 return false;
         }
 
+        public bool UpdateBooking(CustomerBooking updatedBooking)
+        {
+            var oldItem = FindBooking(updatedBooking.MongoId!);
+            db.Bookinger.ReplaceOne(filter: it => it.MongoId == updatedBooking.MongoId, replacement: updatedBooking);
+            if (oldItem != null)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
 
+        
         //return item with id = -1 if not found
         public Shelter FindItem(string id)
         {
 
-            FilterDefinition<Shelter> filter = Builders<Shelter>.Filter.Eq("MongoId", id);
+            throw new NotImplementedException();
+            FilterDefinition<Shelter> filter = Builders<Shelter>.Filter.Eq("_id", id);
             return db.Items.Find(filter).FirstOrDefault();
+
+        }
+        
+
+        public CustomerBooking FindBooking(string id)
+        {
+              
+            FilterDefinition<CustomerBooking> filter = Builders<CustomerBooking>.Filter.Eq("_id", id);
+            return db.Bookinger.Find(filter).FirstOrDefault();
 
         }
 

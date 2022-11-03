@@ -71,8 +71,6 @@ namespace miniProjektShelter.Shared
             [BsonElement("Datoer")]
             public int[]? Dates { get; set; }
 
-            [BsonElement("id")]
-            public int ID { get; set; }
         }
 
     }

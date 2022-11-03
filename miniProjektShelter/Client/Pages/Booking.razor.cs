@@ -170,7 +170,7 @@ namespace miniProjektShelter.Client.Pages
                 BookingDate2 = 0;
             }
 
-            CustomerBooking tmpBooking = new CustomerBooking(CustomerBookingValidation.CustomerName, CustomerBookingValidation.CustomerEmail, CustomerBookingValidation.CustomerPhoneNumber, BookingDate1, BookingDate2, currentShelter.MongoId!);
+            CustomerBooking tmpBooking = new CustomerBooking(CustomerBookingValidation.CustomerName!, CustomerBookingValidation.CustomerEmail!, CustomerBookingValidation.CustomerPhoneNumber, BookingDate1, BookingDate2, currentShelter.MongoId!);
             Service.AddItem(tmpBooking);
             bookingButtonHidden = false;
             modalHidden = "none";
