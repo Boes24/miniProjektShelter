@@ -3,9 +3,15 @@
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
 
-<NavLink class="nav-link" href="pedel">
-    <span class="oi oi-home" aria-hidden="true"></span> Pedel
-</NavLink>
+<ul class="nav nav-pills nav-justified">
+    <li class="topMenu">
+        <a><h1>Naturstyrelsens Bookingside  </h1>  </a>
+    </li>
+    <li class="topmenu" style="float: right">
+        <a href="pedel" style=""<span class="oi oi-home" aria-hidden="true"></span>Pedel</a>
+    </li>
+</ul>
+
 
 
 <div style="width:80%;height:400px;display:@modalHidden;position:absolute;margin-top:10%;margin-bottom:10%;margin-left:10%;margin-right:10%">
@@ -16,22 +22,22 @@
                   OnInvalidSubmit="@HandleInvalidSubmit">
 
             <DataAnnotationsValidator />
-            
+
 
             <h2>Du er ved at booke @valgtShelterString</h2>
 
             <h5><strong>Navn</strong></h5>
-            <InputText  @bind-Value="@CustomerBookingValidation.CustomerName" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerName)"/>
+            <InputText @bind-Value="@CustomerBookingValidation.CustomerName" class="form-control" />
+            <ValidationMessage For="@(() => CustomerBookingValidation.CustomerName)" />
 
             <h5>Email</h5>
             <InputText @bind-Value="@CustomerBookingValidation.CustomerEmail" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerEmail)"/>
+            <ValidationMessage For="@(() => CustomerBookingValidation.CustomerEmail)" />
 
 
             <h5>Telefon</h5>
             <InputNumber @bind-Value="@CustomerBookingValidation.CustomerPhoneNumber" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerPhoneNumber)"/>
+            <ValidationMessage For="@(() => CustomerBookingValidation.CustomerPhoneNumber)" />
             <button type="submit" style="color:green">Send</button>
             <br />
             <button style="color:red" @onclick="(() => AbortBooking())">Fortryd</button>
@@ -42,12 +48,12 @@
 
         </EditForm>
 
-            
+
     </div>
 </div>
 
 
-<h1>Booking</h1>
+
 <br />
 <strong><p style="display:@bookingConfirmationHidden; color:green">Du har nu booket et shelter!</p></strong>
 
@@ -69,7 +75,7 @@
     </div>
     <div class="CustomerDropdown">
 
-        <h5>Antal overnatninger</h5> 
+        <h5>Antal overnatninger</h5>
         <label for="lang">Vælg antal overnatninger</label><br />
         <select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@ChangeShelter()">
             <option value=1>1</option>
@@ -87,48 +93,48 @@
             }
         </select>
     </div>
-    </div>
+</div>
 
-    <!--Hvis shelter listen er tom - vil der stå loading-->
-    @if (IsDataLoaded == false)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
+<!--Hvis shelter listen er tom - vil der stå loading-->
+@if (IsDataLoaded == false)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>KommuneNavn</th>
+                <th>Navn</th>
+                <th>Beskrivelse</th>
+                <th>Antal pladser</th>
+                <th>Handicap egnet</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ShelterX in SheltersToShow)
+            {
+
                 <tr>
-                    <th>KommuneNavn</th>
-                    <th>Navn</th>
-                    <th>Beskrivelse</th>
-                    <th>Antal pladser</th>
-                    <th>Handicap egnet</th>
-                    <th>Book</th>
+                    <td>@ShelterX.Properties.MunicipalName</td>
+                    <td>@ShelterX.Properties.ShelterName</td>
+                    <td>@ShelterX.Properties.LongDescription</td>
+                    <td>@ShelterX.Properties.Capacity</td>
+                    <td>@ShelterX.Properties.Handicap</td>
+                    <td><button hidden="@bookingButtonHidden" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var ShelterX in SheltersToShow)
-                {
+            }
+        </tbody>
+    </table>
 
-                    <tr>
-                        <td>@ShelterX.Properties.MunicipalName</td>
-                        <td>@ShelterX.Properties.ShelterName</td>
-                        <td>@ShelterX.Properties.LongDescription</td>
-                        <td>@ShelterX.Properties.Capacity</td>
-                        <td>@ShelterX.Properties.Handicap</td>
-                        <td><button hidden="@bookingButtonHidden" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        
-    }
+}
 
 
 
-    @code {
+@code {
 
 
 
-    }
+}
