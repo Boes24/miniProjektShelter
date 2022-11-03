@@ -11,9 +11,9 @@ namespace miniProjektShelter.Client.Pages
 
         private List<Shelter> SheltersList = new List<Shelter>();
         private List<CustomerBooking> BookingsList = new List<CustomerBooking>();
-        private List<string> KommuneList = new List<string>();
+        private List<string> MunicipalList = new List<string>();
         private List<Shelter> SheltersToShow = new List<Shelter>();
-        string selectedString = "Samsø Kommune";
+        string selectedString = "Alle kommuner";
         int selectedAntalPersoner = 1;
         string valgtShelterString = "";
         Shelter currentShelter = new Shelter();
@@ -21,8 +21,8 @@ namespace miniProjektShelter.Client.Pages
         string modalHidden = "none";
         string bookingConfirmationHidden = "none";
         DateTime chosenDate = new DateTime();
-        int date1 = 0;
-        int date2 = -1;
+        int BookingDate1 = 0;
+        int BookingDate2 = -1;
         bool IsDataLoaded = false;
 
         int overnatninger2Stk = 1;
@@ -50,20 +50,20 @@ namespace miniProjektShelter.Client.Pages
                     if (shelter.Properties.MunicipalName == selectedString && shelter.Properties.FacilityType == "Shelter" && shelter.Properties.Capacity >= selectedAntalPersoner)
                     {
                         SheltersToShow.Add(shelter);
-                        date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+                        BookingDate1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
                         DateTime tmpDate = chosenDate.AddDays(1);
 
                         foreach (CustomerBooking tmpBooking in BookingsList)
                         {
 
-                            if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelter.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelter.MongoId)
+                            if (tmpBooking.BookedDate1 == BookingDate1 && tmpBooking.BookedShelterID == shelter.MongoId || tmpBooking.BookedDate2 == BookingDate1 && tmpBooking.BookedShelterID == shelter.MongoId)
                             {
                                 TryRemoveShelter(shelter);
                             }
                             else if (overnatninger2Stk == 2)
                             {
-                                date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
-                                if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelter.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelter.MongoId)
+                                BookingDate2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                                if (tmpBooking.BookedDate1 == BookingDate2 && tmpBooking.BookedShelterID == shelter.MongoId || tmpBooking.BookedDate2 == BookingDate2 && tmpBooking.BookedShelterID == shelter.MongoId)
                                 {
                                     TryRemoveShelter(shelter);
                                 }
@@ -85,13 +85,13 @@ namespace miniProjektShelter.Client.Pages
             SheltersList = (await Service!.GetAllItems())!.ToList();
             BookingsList = (await Service!.GetAllBookings())!.ToList();
 
-            KommuneList.Add("Alle kommuner");
+            MunicipalList.Add("Alle kommuner");
 
             foreach (Shelter shelterX in SheltersList)
             {
-                if (!KommuneList.Contains(shelterX.Properties.MunicipalName!))
+                if (!MunicipalList.Contains(shelterX.Properties.MunicipalName!))
                 {
-                    KommuneList.Add(shelterX.Properties.MunicipalName!);
+                    MunicipalList.Add(shelterX.Properties.MunicipalName!);
                 }
             }
             IsDataLoaded = true;
@@ -139,61 +139,48 @@ namespace miniProjektShelter.Client.Pages
             bookingConfirmationHidden = "none";
         }
 
-        public void Fortryd()
+        public void AbortBooking()
         {
             modalHidden = "none";
             bookingButtonHidden = false;
             bookingConfirmationHidden = "block";
-
         }
-
 
         // Validation handler
         private CustomerBooking CustomerBookingValidation = new CustomerBooking();
         private EditContext? EditContext;
         private List<CustomerBooking> ValidationList = new List<CustomerBooking>();
 
-
         private void HandleValidSubmit()
         {
             Console.WriteLine("HandleValidSubmit Called...");
             ValidationList.Add(CustomerBookingValidation);
 
-            //Konvetere dateformatere til int
+            //Konverterer DateTime formater til int
             //2022-11-02 => 20221102    2022*10000 = 20220000 + 11*100 = 1100 + 02
-            date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+            BookingDate1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
             if (overnatninger2Stk == 2)
             {
                 DateTime tmpDate = chosenDate.AddDays(1);
-                date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                BookingDate2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
             }
 
-            if (date2 == -1)
+            if (BookingDate2 == -1)
             {
-                date2 = 0;
+                BookingDate2 = 0;
             }
 
-            CustomerBooking tmpBooking = new CustomerBooking(CustomerBookingValidation.CustomerName, CustomerBookingValidation.Email, CustomerBookingValidation.PhoneNumber, date1, date2, currentShelter.MongoId!);
+            CustomerBooking tmpBooking = new CustomerBooking(CustomerBookingValidation.CustomerName, CustomerBookingValidation.CustomerEmail, CustomerBookingValidation.CustomerPhoneNumber, BookingDate1, BookingDate2, currentShelter.MongoId!);
             Service.AddItem(tmpBooking);
             bookingButtonHidden = false;
             modalHidden = "none";
             bookingConfirmationHidden = "block";
-
-
-
-
         }
 
         private void HandleInvalidSubmit()
         {
             Console.WriteLine("HandleInvalidSubmit Called...");
         }
-
-
-
-
-
-
     }
 }
 

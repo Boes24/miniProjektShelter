@@ -9,12 +9,12 @@ namespace miniProjektShelter.Client.Pages
     {
         private List<Shelter> SheltersList = new List<Shelter>();
         private List<CustomerBooking> BookingerList = new List<CustomerBooking>();
-        private List<string> KommuneList = new List<string>();
+        private List<string> MunicipalList = new List<string>();
         private List<Shelter> SheltersToShow = new List<Shelter>();
 
         private List<CustomerBooking> bookingsToShow = new List<CustomerBooking>();
 
-        private string chosenKommune = "Samsø Kommune";
+        private string chosenMunicipal = "Samsø Kommune";
 
 
         [Inject]
@@ -26,9 +26,9 @@ namespace miniProjektShelter.Client.Pages
 
             foreach (Shelter shelterX in SheltersList)
             {
-                if (!KommuneList.Contains(shelterX.Properties.MunicipalName!))
+                if (!MunicipalList.Contains(shelterX.Properties.MunicipalName!))
                 {
-                    KommuneList.Add(shelterX.Properties.MunicipalName!);
+                    MunicipalList.Add(shelterX.Properties.MunicipalName!);
                 }
             }
 
@@ -43,7 +43,7 @@ namespace miniProjektShelter.Client.Pages
             SheltersToShow.Clear();
             foreach (Shelter shelterX in SheltersList)
             {
-                if (shelterX.Properties.MunicipalName == chosenKommune && shelterX.Properties.FacilityType == "Shelter")
+                if (shelterX.Properties.MunicipalName == chosenMunicipal && shelterX.Properties.FacilityType == "Shelter")
                 {
                     SheltersToShow.Add(shelterX);
                 }
@@ -54,7 +54,7 @@ namespace miniProjektShelter.Client.Pages
             {
                 foreach (Shelter shelterX in SheltersToShow)
                 {
-                    if (shelterX.MongoId == bookingX.ShelterID)
+                    if (shelterX.MongoId == bookingX.BookedShelterID)
                     {
                         bookingsToShow.Add(bookingX);
                     }

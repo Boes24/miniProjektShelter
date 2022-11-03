@@ -25,16 +25,16 @@
         <ValidationMessage For="@(() => CustomerBookingValidation.CustomerName)"/>
 
             <h5>Email</h5>
-            <InputText @bind-Value="@CustomerBookingValidation.Email" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.Email)"/>
+            <InputText @bind-Value="@CustomerBookingValidation.CustomerEmail" class="form-control" />
+        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerEmail)"/>
 
 
             <h5>Telefon</h5>
-            <InputNumber @bind-Value="@CustomerBookingValidation.PhoneNumber" class="form-control" />
-        <ValidationMessage For="@(() => CustomerBookingValidation.PhoneNumber)"/>
+            <InputNumber @bind-Value="@CustomerBookingValidation.CustomerPhoneNumber" class="form-control" />
+        <ValidationMessage For="@(() => CustomerBookingValidation.CustomerPhoneNumber)"/>
             <button type="submit" style="color:green">Send</button>
             <br />
-            <button style="color:red" @onclick="(() => Fortryd())">Fortryd</button>
+            <button style="color:red" @onclick="(() => AbortBooking())">Fortryd</button>
             <div>
                 <input id="checkbox" type="checkbox" />
                 <label for="checkbox"> Jeg accepterer <a href="#">Terms and Conditions</a>.</label>
@@ -55,8 +55,8 @@
     <div class="CustomerDropdown">
         <h4>Kommune</h4>
         <label for="lang">Vælg kommune</label><br />
-        <select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@ChangeShelter()">
-            @foreach (var navn in KommuneList)
+        <select name="municipalSelector" id="municipalSelector" @bind="@selectedString" onclick="@ChangeShelter()">
+            @foreach (var navn in MunicipalList)
             {
                 <option value=@navn>@navn</option>
             }

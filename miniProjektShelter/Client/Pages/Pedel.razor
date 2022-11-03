@@ -10,21 +10,21 @@
 
 <h4>Kommune</h4>
 <label for="lang">Vælg kommune</label>
-<select name="kommuneSelector" id="kommuneSelector" @bind="chosenKommune" onclick="@changeMunicipality()">
-    @foreach (var navn in KommuneList)
+<select name="municipalSelector" id="municipalSelector" @bind="chosenMunicipal" onclick="@changeMunicipality()">
+    @foreach (var municipalName in MunicipalList)
     {
-        <option value=@navn>@navn</option>
+        <option value=@municipalName>@municipalName</option>
     }
 </select>
 
 <table class="table">
     <thead>
         <tr>
-            <th>CostumerName</th>
-            <th>BookingEmail</th>
-            <th>ShelterNavn</th>
-            <th>Date1</th>
-            <th>Date2</th>
+            <th>Kunde navn</th>
+            <th>Booking email</th>
+            <th>Shelter navn</th>
+            <th>Dato 1</th>
+            <th>Dato 2</th>
         </tr>
     </thead>
     <tbody>
@@ -33,19 +33,11 @@
 
             <tr>
                 <td>@Booking.CustomerName</td>
-                <td>@Booking.Email</td>
-                <td>@Booking.FindShelterInList(Booking.ShelterID, SheltersList).Properties.ShelterName</td>
-                <td>@Booking.Date1</td>
-                <td>@Booking.Date2</td>
+                <td>@Booking.CustomerEmail</td>
+                <td>@Booking.FindShelterInList(Booking.BookedShelterID, SheltersList).Properties.ShelterName</td>
+                <td>@Booking.BookedDate1</td>
+                <td>@Booking.BookedDate2</td>
             </tr>
         }
     </tbody>
 </table>
-
-@code {
-
-  
-
-
-}
-

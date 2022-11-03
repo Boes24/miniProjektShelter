@@ -20,30 +20,30 @@ namespace miniProjektShelter.Shared{
         [Required]
         [EmailAddress]
         [BsonElement("Email")]
-        public string? Email { get; set; }
+        public string? CustomerEmail { get; set; }
 
         [Required]
         [Range(minimum: 1, maximum: System.Int32.MaxValue, ErrorMessage = "Et telefonnummer kan ikke indeholde bogstaver")]
         [BsonElement("Telefon")]
-        public int PhoneNumber { get; set; }
+        public int CustomerPhoneNumber { get; set; }
 
         [BsonElement("Date1")]
-        public int Date1 { get; set; }
+        public int BookedDate1 { get; set; }
 
         [BsonElement("Date2")]
-        public int Date2 { get; set; }
+        public int BookedDate2 { get; set; }
 
         [BsonElement("ShelterID")]
-        public string ShelterID { get; set; }
+        public string BookedShelterID { get; set; }
 
         public CustomerBooking(string costumerName, string email, int phoneNumber, int date1, int date2, string shelterID)
         {
             this.CustomerName = costumerName;
-            this.Email = email;
-            this.PhoneNumber = phoneNumber;
-            this.Date1 = date1;
-            this.Date2 = date2;
-            this.ShelterID = shelterID;
+            this.CustomerEmail = email;
+            this.CustomerPhoneNumber = phoneNumber;
+            this.BookedDate1 = date1;
+            this.BookedDate2 = date2;
+            this.BookedShelterID = shelterID;
         }
 
         public CustomerBooking()
