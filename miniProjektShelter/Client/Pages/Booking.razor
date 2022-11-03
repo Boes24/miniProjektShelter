@@ -89,7 +89,7 @@
     </div>
 
     <!--Hvis shelter listen er tom - vil der stå loading-->
-    @if (SheltersToShow.Count() == 0)
+    @if (IsDataLoaded == false)
     {
         <p><em>Loading...</em></p>
     }

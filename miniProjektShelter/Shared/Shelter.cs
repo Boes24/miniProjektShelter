@@ -12,7 +12,12 @@ namespace miniProjektShelter.Shared
         }
         public Shelter(string navn = "")
         {
+            this.Properties = new ShelterProperties();
             this.Properties.Navn = navn;
+            this.Properties.KommuneNavn = "";
+            this.Properties.Lang_beskrivelse = "";
+            this.Properties.Antal_pl = 0;
+            this.Properties.Handicap = "";
         }
 
         [BsonId]

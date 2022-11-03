@@ -22,6 +22,7 @@ namespace miniProjektShelter.Client.Pages
         DateTime chosenDate = new DateTime();
         int date1 = 0;
         int date2 = -1;
+        bool IsDataLoaded = false;
 
         int overnatninger2Stk = 1;
 
@@ -57,8 +58,17 @@ namespace miniProjektShelter.Client.Pages
 
                             if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
                             {
-                                Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                                SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                                try
+                                {
+                                    Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                                    SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                                }
+                                catch
+                                {
+                                    Shelter dummyShelter = new Shelter(navn: "Ingen shelters passer til dine valg");
+
+                                    SheltersToShow.Add(dummyShelter);
+                                }
 
                             }
                             else if (overnatninger2Stk == 2)
@@ -66,8 +76,17 @@ namespace miniProjektShelter.Client.Pages
                                 date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
                                 if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
                                 {
-                                    Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                                    SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                                    try{
+                                        Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                                        SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                                    }
+                                    catch
+                                    {
+                                        Shelter dummyShelter = new Shelter(navn: "Ingen shelters passer til dine valg");
+
+                                        SheltersToShow.Add(dummyShelter);
+                                    }
+                                    
                                 }
                             }
                         }
@@ -96,7 +115,7 @@ namespace miniProjektShelter.Client.Pages
                     KommuneList.Add(shelterX.Properties.KommuneNavn!);
                 }
             }
-
+            IsDataLoaded = true;
 
         }
 
@@ -106,6 +125,7 @@ namespace miniProjektShelter.Client.Pages
             base.OnInitialized();
             chosenDate = getCurrentDate();
             EditContext = new EditContext(CustomerBookingValidation); // Opretter ny editcontext til validering af brugerinfo
+            
 
         }
 
