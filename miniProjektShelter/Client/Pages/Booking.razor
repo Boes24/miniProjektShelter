@@ -2,7 +2,6 @@
 @using System.Net;
 @using miniProjektShelter.Shared;
 @using miniProjektShelter.Client.Services;
-@using miniProjektShelter.Client.Shared;
 
 <NavLink class="nav-link" href="pedel">
     <span class="oi oi-home" aria-hidden="true"></span> Pedel
@@ -20,9 +19,9 @@
         <button style="color:green" @onclick="(() => Send())">Send</button>
         <br />
         <button style="color:red" @onclick="(() => Fortryd())">Fortryd</button>
-        <div class="tacbox">
+        <div> 
             <input id="checkbox" type="checkbox" />
-            <label for="checkbox"> Jeg acceptere <a href="#">Terms and Conditions</a>.</label>
+            <label for="checkbox"> Jeg accepterer <a href="#">Terms and Conditions</a>.</label>
         </div>
     </div>
 </div>
@@ -31,213 +30,231 @@
 <h1>Booking</h1>
 <br />
 
-<h4>Kommune</h4>
-<label for="lang">Vælg kommune</label>
-<select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@changeShelter()">
-    @foreach (var navn in KommuneList)
-    {
-        <option value=@navn>@navn</option>
-    }
-</select>
-
-<h5>Dato</h5>
-<label for="lang">Indtast dato</label>
-<input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()" />
-
-<h5>Antal overnatninger</h5>
-<select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@changeShelter()">
-    <option value=1>1</option>
-    <option value=2>2</option>
-</select>
-
-<h5>Antal personer</h5>
-<select name="antalSelectorPersoner" id="antalSelectorPersoner" @bind="@selectedAntalPersoner" onclick="@changeShelter()">
-    @for (int i = 0; i < 10; i++)
-    {
-        <option value=@i>@i</option>
-    }
-</select>
-
-<!--Hvis shelter listen er tom - vil der stå loading-->
-@if (SheltersToShow == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>KommuneNavn</th>
-                <th>Navn</th>
-                <th>Beskrivelse</th>
-                <th>Antal pladser</th>
-                <th>Handicap egnet</th>
-                <th>Book</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ShelterX in SheltersToShow)
+<div>
+    <div class="CustomerDropdown">
+        <h4>Kommune</h4>
+        <label for="lang">Vælg kommune</label><br />
+        <select name="kommuneSelector" id="kommuneSelector" @bind="@selectedString" onclick="@changeShelter()">
+            @foreach (var navn in KommuneList)
             {
+                <option value=@navn>@navn</option>
+            }
+        </select>
+    </div>
+    <div class="CustomerDropdown">
+        <h5>Dato</h5>
+        <label for="lang">Indtast dato</label><br />
+        <input type="date" @bind="@chosenDate" max="2025-12-31" onclick="@changeShelter()" />
+    </div>
+    <div class="CustomerDropdown">
 
+        <h5>Antal overnatninger</h5> 
+        <label for="lang">Vælg antal overnatninger</label><br />
+        <select name="antalSelectorOvernatninger" id="antalSelectorOvernatninger" @bind="@overnatninger2Stk" onclick="@changeShelter()">
+            <option value=1>1</option>
+            <option value=2>2</option>
+        </select>
+    </div>
+    <div class="CustomerDropdown">
+
+        <h5>Antal personer</h5>
+        <label for="lang">Vælg antal personer</label><br />
+        <select name="antalSelectorPersoner" id="antalSelectorPersoner" @bind="@selectedAntalPersoner" onclick="@changeShelter()">
+            @for (int i = 0; i < 10; i++)
+            {
+                <option value=@i>@i</option>
+            }
+        </select>
+    </div>
+    </div>
+
+    <!--Hvis shelter listen er tom - vil der stå loading-->
+    @if (SheltersToShow.Count() == 0)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@ShelterX.Properties.KommuneNavn</td>
-                    <td>@ShelterX.Properties.Navn</td>
-                    <td>@ShelterX.Properties.Lang_beskrivelse</td>
-                    <td>@ShelterX.Properties.Antal_pl</td>
-                    <td>@ShelterX.Properties.Handicap</td>
-                    <td><button hidden="@hide1" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
+                    <th>KommuneNavn</th>
+                    <th>Navn</th>
+                    <th>Beskrivelse</th>
+                    <th>Antal pladser</th>
+                    <th>Handicap egnet</th>
+                    <th>Book</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-
-
-
-@code {
-
-    private List<Shelter> SheltersList = new List<Shelter>();
-    private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
-    private List<string> KommuneList = new List<string>();
-    private List<Shelter> SheltersToShow = new List<Shelter>();
-    string selectedString = "Samsø Kommune";
-    int selectedAntalPersoner = 1;
-    string valgtShalterX = "";
-    Shelter currentShelter = new Shelter();
-    bool hide1 = false;
-    string modalHidden = "none";
-    string costumerName = "";
-    string email = "";
-    int number = new int();
-    DateTime chosenDate = new DateTime();
-    int date1 = 0;
-    int date2 = -1;
-
-    int overnatninger2Stk = 1;
-
-
-    public int changeShelter()
-    {
-        SheltersToShow.Clear();
-
-        if (selectedString == "Alle kommuner")
-        {
-            foreach (Shelter shelterX in SheltersList)
-            {
-                if (shelterX.Properties.Facil_ty == "Shelter")
+            </thead>
+            <tbody>
+                @foreach (var ShelterX in SheltersToShow)
                 {
-                    SheltersToShow.Add(shelterX);
+
+                    <tr>
+                        <td>@ShelterX.Properties.KommuneNavn</td>
+                        <td>@ShelterX.Properties.Navn</td>
+                        <td>@ShelterX.Properties.Lang_beskrivelse</td>
+                        <td>@ShelterX.Properties.Antal_pl</td>
+                        <td>@ShelterX.Properties.Handicap</td>
+                        <td><button hidden="@hide1" @onclick="(() => bookShelter(ShelterX))">Book</button></td>
+                    </tr>
                 }
+            </tbody>
+        </table>
+    }
 
-            }
-        }
-        else
+
+
+    @code {
+
+        private List<Shelter> SheltersList = new List<Shelter>();
+        private List<CostumerBooking> BookingerList = new List<CostumerBooking>();
+        private List<string> KommuneList = new List<string>();
+        private List<Shelter> SheltersToShow = new List<Shelter>();
+        string selectedString = "Samsø Kommune";
+        int selectedAntalPersoner = 1;
+        string valgtShalterX = "";
+        Shelter currentShelter = new Shelter();
+        bool hide1 = false;
+        string modalHidden = "none";
+        string costumerName = "";
+        string email = "";
+        int number = new int();
+        DateTime chosenDate = new DateTime();
+        int date1 = 0;
+        int date2 = -1;
+
+        int overnatninger2Stk = 1;
+
+
+        public int changeShelter()
         {
-            foreach (Shelter shelterX in SheltersList)
+            SheltersToShow.Clear();
+
+            if (selectedString == "Alle kommuner")
             {
-                if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+                foreach (Shelter shelterX in SheltersList)
                 {
-                    SheltersToShow.Add(shelterX);
-                    date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
-                    DateTime tmpDate = chosenDate.AddDays(1);
-
-
-                    foreach (CostumerBooking tmpBooking in BookingerList)
+                    if (shelterX.Properties.Facil_ty == "Shelter")
                     {
+                        SheltersToShow.Add(shelterX);
+                    }
 
-                        if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
-                        {
-                            Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                            SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                }
+            }
+            else
+            {
+                foreach (Shelter shelterX in SheltersList)
+                {
+                    if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+                    {
+                        SheltersToShow.Add(shelterX);
+                        date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+                        DateTime tmpDate = chosenDate.AddDays(1);
 
-                        }
-                        else if (overnatninger2Stk == 2)
+
+                        foreach (CostumerBooking tmpBooking in BookingerList)
                         {
-                            date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
-                            if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
+
+                            if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
                             {
                                 Console.WriteLine("Remove:" + shelterX.Properties.Navn);
                                 SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+
+                            }
+                            else if (overnatninger2Stk == 2)
+                            {
+                                date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                                if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
+                                {
+                                    Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                                    SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                                }
                             }
                         }
                     }
                 }
             }
+
+
+            return 1;
         }
 
+        [Inject]
+        public IShelterService? Service { get; set; }
 
-        return 1;
-    }
-
-    [Inject]
-    public IShelterService? Service { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        SheltersList = (await Service!.GetAllItems())!.ToList();
-        BookingerList = (await Service!.GetAllBookings())!.ToList();
-
-        KommuneList.Add("Alle kommuner");
-
-        foreach (Shelter shelterX in SheltersList)
+        protected override async Task OnInitializedAsync()
         {
-            if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
+            SheltersList = (await Service!.GetAllItems())!.ToList();
+            BookingerList = (await Service!.GetAllBookings())!.ToList();
+
+            KommuneList.Add("Alle kommuner");
+
+            foreach (Shelter shelterX in SheltersList)
             {
-                KommuneList.Add(shelterX.Properties.KommuneNavn!);
+                if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
+                {
+                    KommuneList.Add(shelterX.Properties.KommuneNavn!);
+                }
             }
+
+
         }
 
-
-    }
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        chosenDate = getCurrentDate();
-    }
-
-
-    public DateTime getCurrentDate()
-    {
-        return DateTime.Now;
-    }
-
-    public void bookShelter(Shelter valgtShelter)
-    {
-        modalHidden = "block";
-        hide1 = true;
-        valgtShalterX = valgtShelter.Properties.Navn!;
-        currentShelter = valgtShelter;
-    }
-
-    public void Fortryd()
-    {
-        modalHidden = "none";
-        hide1 = false;
-    }
-    public void Send()
-    {
-
-
-        //Konvetere dateformatere til int
-        //2022-11-02 => 20221102    2022*10000 = 20220000 + 11*100 = 1100 + 02
-        date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
-        if (overnatninger2Stk == 2)
+        protected override void OnInitialized()
         {
-            DateTime tmpDate = chosenDate.AddDays(1);
-            date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+            base.OnInitialized();
+            chosenDate = getCurrentDate();
         }
 
-        if (date2 == -1)
+
+        public DateTime getCurrentDate()
         {
-            date2 = 0;
+            return DateTime.Now;
         }
 
-        CostumerBooking tmpBooking = new CostumerBooking(costumerName, email, number, date1, date2, currentShelter.MongoId!);
-        Service.AddItem(tmpBooking);
+        public void bookShelter(Shelter valgtShelter)
+        {
+            modalHidden = "block";
+            hide1 = true;
+            valgtShalterX = valgtShelter.Properties.Navn!;
+            currentShelter = valgtShelter;
+        }
+
+        public void Fortryd()
+        {
+            modalHidden = "none";
+            hide1 = false;
+        }
+        public void Send()
+        {
+
+
+            //Konvetere dateformatere til int
+            //2022-11-02 => 20221102    2022*10000 = 20220000 + 11*100 = 1100 + 02
+            date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+            if (overnatninger2Stk == 2)
+            {
+                DateTime tmpDate = chosenDate.AddDays(1);
+                date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+            }
+
+            if (date2 == -1)
+            {
+                date2 = 0;
+            }
+
+            CostumerBooking tmpBooking = new CostumerBooking(costumerName, email, number, date1, date2, currentShelter.MongoId!);
+            Service.AddItem(tmpBooking);
+
+        }
+
 
     }
 
-
+<style>
+    .CustomerDropdown{
+       display:inline-block;
+       margin-right: 13%;
     }
+</style>
