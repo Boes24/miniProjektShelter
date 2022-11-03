@@ -120,64 +120,53 @@ else
     public int changeShelter()
     {
         SheltersToShow.Clear();
-        foreach (Shelter shelterX in SheltersList)
+
+        if (selectedString == "Alle kommuner")
         {
-            if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+            foreach (Shelter shelterX in SheltersList)
             {
-                SheltersToShow.Add(shelterX);
-                date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
-                DateTime tmpDate = chosenDate.AddDays(1);
-
-
-                foreach (CostumerBooking tmpBooking in BookingerList)
+                if (shelterX.Properties.Facil_ty == "Shelter")
                 {
-
-                    if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
-                    {
-                        Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                        SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
-
-                    }
-                    else if (overnatninger2Stk == 2)
-                    {
-                        date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
-                        if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
-                        {
-                            Console.WriteLine("Remove:" + shelterX.Properties.Navn);
-                            SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
-                        }
-                    }
-
-
-                    /*
-                    if (overnatninger2Stk == 1)
-                    {
-                        Console.WriteLine("overnatninger2Stk = 1");
-
-                        if (tmpBooking.Date1 != date1 && tmpBooking.Date2 != date1 && !SheltersToShow.Contains(shelterX))
-                        {
-
-                            SheltersToShow.Add(shelterX);
-                        }
-                    }
-                    else if (overnatninger2Stk == 2)
-                    {
-                        Console.WriteLine("overnatninger2Stk = 2");
-                        DateTime tmpDate = chosenDate.AddDays(1);
-                        date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
-                        if (tmpBooking.Date1 != date1 && tmpBooking.Date2 != date1 && tmpBooking.Date1 != date2 && tmpBooking.Date2 != date2 && !SheltersToShow.Contains(shelterX))
-                        {
-                            SheltersToShow.Add(shelterX);
-                        }
-                    }
-                    */
-
-
+                    SheltersToShow.Add(shelterX);
                 }
-
 
             }
         }
+        else
+        {
+            foreach (Shelter shelterX in SheltersList)
+            {
+                if (shelterX.Properties.KommuneNavn == selectedString && shelterX.Properties.Facil_ty == "Shelter" && shelterX.Properties.Antal_pl >= selectedAntalPersoner)
+                {
+                    SheltersToShow.Add(shelterX);
+                    date1 = chosenDate.Year * 10000 + chosenDate.Month * 100 + chosenDate.Day;
+                    DateTime tmpDate = chosenDate.AddDays(1);
+
+
+                    foreach (CostumerBooking tmpBooking in BookingerList)
+                    {
+
+                        if (tmpBooking.Date1 == date1 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date1 && tmpBooking.ShelterID == shelterX.MongoId)
+                        {
+                            Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                            SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+
+                        }
+                        else if (overnatninger2Stk == 2)
+                        {
+                            date2 = tmpDate.Year * 10000 + tmpDate.Month * 100 + tmpDate.Day;
+                            if (tmpBooking.Date1 == date2 && tmpBooking.ShelterID == shelterX.MongoId || tmpBooking.Date2 == date2 && tmpBooking.ShelterID == shelterX.MongoId)
+                            {
+                                Console.WriteLine("Remove:" + shelterX.Properties.Navn);
+                                SheltersToShow.RemoveAt(SheltersToShow.Count - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
         return 1;
     }
 
@@ -189,6 +178,8 @@ else
         SheltersList = (await Service!.GetAllItems())!.ToList();
         BookingerList = (await Service!.GetAllBookings())!.ToList();
 
+        KommuneList.Add("Alle kommuner");
+
         foreach (Shelter shelterX in SheltersList)
         {
             if (!KommuneList.Contains(shelterX.Properties.KommuneNavn!))
@@ -196,6 +187,7 @@ else
                 KommuneList.Add(shelterX.Properties.KommuneNavn!);
             }
         }
+
 
     }
 
@@ -247,5 +239,5 @@ else
 
     }
 
-    
-}
+
+    }
