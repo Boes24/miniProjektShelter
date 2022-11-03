@@ -17,9 +17,13 @@
         <input @bind="@email" />
         <h5>Telefon</h5>
         <input @bind="@number" />
-        <button @onclick="(() => Send())">Send</button>
+        <button style="color:green" @onclick="(() => Send())">Send</button>
         <br />
-        <button @onclick="(() => Fortryd())">Fortryd</button>
+        <button style="color:red" @onclick="(() => Fortryd())">Fortryd</button>
+        <div class="tacbox">
+            <input id="checkbox" type="checkbox" />
+            <label for="checkbox"> Jeg acceptere <a href="#">Terms and Conditions</a>.</label>
+        </div>
     </div>
 </div>
 
@@ -54,6 +58,7 @@
     }
 </select>
 
+<!--Hvis shelter listen er tom - vil der stå loading-->
 @if (SheltersToShow == null)
 {
     <p><em>Loading...</em></p>

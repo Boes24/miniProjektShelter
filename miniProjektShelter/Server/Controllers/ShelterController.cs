@@ -12,6 +12,7 @@ namespace miniProjektShelter.Server.Controllers{
     {
         private readonly IShelterRepository Repository = new ShelterRepositoryMongo();
 
+        //contructor tjekker om repository er tom og hvis den er, laves et nyt repository 
 
         public ShelterController(IShelterRepository shelterRepository)
         {
@@ -29,13 +30,15 @@ namespace miniProjektShelter.Server.Controllers{
             return Repository.GetAllItems();
         }
 
+
         [HttpGet]
-        [Route("getAllBookings")]
+        [Route("getAllBookings")] //route er til for at lave flere get metoder i samme controller
         public IEnumerable<CostumerBooking> GetAllBookings()
         {
             return Repository.GetAllBookings();
         }
 
+        
         [HttpDelete("{id:int}")]
         public StatusCodeResult DeleteItem(int id)
         {
